@@ -9,8 +9,8 @@ services:
     ports:
       - "9000:9000"
     environment:
-      - DB_TYPE=sqlite
-      - DB_PATH=/database/books.db
+      DB_TYPE: sqlite
+      DB_PATH: /database/books.db
     volumes:
       - .:/database
     healthcheck:
@@ -28,10 +28,9 @@ services:
     entrypoint: ash
     command: "/extras/populate.sh"
     environment:
-      - SERVER=books-pyapi
+      SERVER: books-pyapi
     volumes:
       - ./extras/populate.sh:/extras/populate.sh
-
     depends_on: 
       books-pyapi:
         condition: service_healthy
