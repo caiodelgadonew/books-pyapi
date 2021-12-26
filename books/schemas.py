@@ -7,7 +7,7 @@ class BookBase(BaseModel):
     body: str
     url: Optional[str] = None
     language: str
-    user_id: str
+    user_id: int
 
 
 class User(BaseModel):
