@@ -7,7 +7,7 @@ Simple API written in Python using [FastAPI](https://fastapi.tiangolo.com/) to s
 ## Requisites
 
 This app is intended to run at minimun Python version 3.6.
-Extra requirements can be seen in [requirements.txt](app/requirements.txt) file.
+Extra requirements can be seen in [requirements.txt](books/requirements.txt) file.
 
 ## Database Customization
 
