@@ -1,6 +1,7 @@
 # Virtual env and sample database
 book-pyapi
 *.db
+mysql/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
