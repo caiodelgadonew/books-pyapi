@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+
+  books-pyapi:
+    build: .
+    image: books-pyapi
+    container_name: books-pyapi
+    ports:
+      - "9000:9000"
+    environment:
+      DB_TYPE: mysql
+      DB_HOST: books-database
+      DB_PORT: 3306
+      DB_NAME: books
+      DB_USER: apiuser
+      DB_PASS: apipassword
+    healthcheck:
+      test: ["CMD", "ash", "-c", 
+        "curl -fsSL -X 'GET' 'http://localhost:9000/api/v1/health' -H 'accept: application/json'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    depends_on:
+      books-database:
+        condition: service_started
+    
+
+  books-database:
+    image: mariadb
+    container_name: books-database
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: generate
+      MYSQL_USER: apiuser
+      MYSQL_PASSWORD: apipassword
+      MYSQL_DATABASE: books
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+  # Populate database with some data through the API
+  # Comment the block below if you want to start with a empty database
+  database-init:
+    image: books-pyapi
+    container_name: database-init
+    entrypoint: ash
+    command: "/extras/populate.sh"
+    environment:
+      - SERVER=books-pyapi
+    volumes:
+      - ./extras/populate.sh:/extras/populate.sh
+    depends_on: 
+      books-pyapi:
+        condition: service_healthy
