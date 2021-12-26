@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from logging.config import dictConfig
 import logging
 
+
 class LogConfig(BaseModel):
 
     LOGGER_NAME: str = "app"
@@ -26,10 +27,8 @@ class LogConfig(BaseModel):
     }
     loggers = {
         "app": {"handlers": ["default"], "level": LOG_LEVEL},
-        "uvicorn": {"handlers": ["default"], "level": LOG_LEVEL}
+        "uvicorn": {"handlers": ["default"], "level": LOG_LEVEL},
     }
-
-
 
 
 def _setup_logging():

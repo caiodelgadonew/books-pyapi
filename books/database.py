@@ -1,8 +1,8 @@
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base 
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from .logger import _setup_logging 
+from .logger import _setup_logging
 
 log = _setup_logging()
 
@@ -21,20 +21,15 @@ if DB_TYPE == "sqlite":
     log.info("Using SQLITE as Database")
     DATABASE_URL = f"sqlite:///{DB_PATH}"
 else:
-    log.error(f"Database {DB_TYPE} is not supported, please set the env DB_TYPE to 'sqlite' or 'mysql'")
+    log.error(
+        f"Database {DB_TYPE} is not supported, please set the env DB_TYPE to 'sqlite' or 'mysql'"
+    )
     exit()
 
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
-    )
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
-SessionLocal = sessionmaker(
-    bind=engine, 
-    autocommit=False,
-    autoflush=False
-    )
+SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 Base = declarative_base()
 
