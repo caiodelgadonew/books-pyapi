@@ -1,9 +1,9 @@
 
 from typing import List
 from fastapi import APIRouter, Depends, status, HTTPException
-import schemas, database
+from .. import schemas, database
 from sqlalchemy.orm import Session
-from functions import book
+from ..functions import book
 
 router = APIRouter(
     prefix="/api/v1/book",

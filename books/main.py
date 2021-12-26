@@ -1,16 +1,16 @@
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
-import models
-from database import engine
-from logger import _setup_logging 
-from routers import book, user
+from . import models
+from .database import engine
+from .logger import _setup_logging 
+from .routers import book, user
 
 log = _setup_logging()
 
 app = FastAPI(
     openapi_url="/api/v1/openapi.json",
     docs_url="/",
-    redoc_url=None
+    redoc_url="/docs"
     )
 
 models.Base.metadata.create_all(engine)
