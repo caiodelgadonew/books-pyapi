@@ -1,0 +1,5 @@
+# Virtual env and sample database
+book-pyapi
+*.db
+mysql/
+
