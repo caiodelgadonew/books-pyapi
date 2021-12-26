@@ -16,18 +16,19 @@ DB_PASS = os.getenv("DB_PASS", "password")
 
 if DB_TYPE == "mysql":
     log.info("Using MYSQL as Database")
-    DATABASE_URL = f"mysql+mysqldb://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-if DB_TYPE == "sqlite":
+    DATABASE_URL = f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    CONNECT_ARGS = {"charset": "utf8mb4"}
+elif DB_TYPE == "sqlite":
     log.info("Using SQLITE as Database")
     DATABASE_URL = f"sqlite:///{DB_PATH}"
+    CONNECT_ARGS = {"check_same_thread": False}
 else:
     log.error(
         f"Database {DB_TYPE} is not supported, please set the env DB_TYPE to 'sqlite' or 'mysql'"
     )
     exit()
 
-
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(DATABASE_URL, connect_args=CONNECT_ARGS)
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
