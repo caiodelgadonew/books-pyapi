@@ -4,11 +4,17 @@ LABEL       code.author="caiodelgadonew"
 LABEL       dockerfile.author="caiodelgadonew"
 LABEL       dockerfile.mantainer="caiodelgadonew"
 
-WORKDIR     / 
-COPY        books /books
-
 RUN         apk add --no-cache curl ;\
-            pip3 install -r books/requirements.txt
+            python3 -m pip install --upgrade pip;\
+            adduser -D uvicorn
+
+USER        uvicorn
+WORKDIR     /home/uvicorn
+ENV         PATH="/home/uvicorn/.local/bin:${PATH}"
+
+COPY        --chown=uvicorn:uvicorn books /home/uvicorn/books
+
+RUN         pip3 install -r books/requirements.txt
 
 EXPOSE      9000 
 
