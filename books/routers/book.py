@@ -11,7 +11,7 @@ get_db = database.get_db
 
 @router.get(
     "/",
-    status_code=200,
+    status_code=status.HTTP_200_OK,
     response_model=List[schemas.ShowBook],
     # response_model_exclude={"writer" : {"books"}} ,
     response_model_exclude={
@@ -39,7 +39,7 @@ def update(id: int, request: schemas.Book, db: Session = Depends(get_db)):
 
 @router.get(
     "/{id}",
-    status_code=200,
+    status_code=status.HTTP_200_OK,
     response_model=schemas.ShowBook,
     response_model_exclude={"writer": {"books": {"__all__": {"user_id"}}}},
 )
