@@ -1,5 +1,6 @@
-# Virtual env
-book-venv
+# Virtual env and sample database
+book-pyapi
+*.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
