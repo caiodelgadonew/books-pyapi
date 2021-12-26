@@ -1,6 +1,6 @@
 # Simple API made with Python FastAPI
 
-> WIP: Documentation
+> WIP: Deploy in AWS with Terraform
 
 Simple API written in Python using [FastAPI](https://fastapi.tiangolo.com/) to store and retrieve Books and Authors.
 
@@ -88,4 +88,27 @@ After the application healthcheck (30s) the `database-init` container will start
 Access the application at the address: `http://<CONTAINER_HOST_IP>:9000`
 
 
-# [WIP] Docker Container - MySQL
+# Docker Container - MySQL
+
+To run the application as a Docker Container you can use the provided [docker-compose.yml](docker-compose.yml)
+
+> Be sure to have [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) installed before proceeding
+
+Clone the repository:
+```bash
+$ git clone git@github.com:caiodelgadonew/book-pyapi.git
+``` 
+
+Run `docker-compose up` to create the environment:
+```bash
+$ docker-compose  up
+``` 
+> You can add `-d` to the `docker-compose` command to start detached
+
+The database will be automatically populated through the API with two users and some books, if you dont want to populate the database comment the block `database-init` from `docker-compose.yml`.
+
+After the application healthcheck (30s) the `database-init` container will start and populate the database with some data.
+
+Access the application at the address: `http://<CONTAINER_HOST_IP>:9000`
+
+# [WIP] Deploy in AWS with Terraform
