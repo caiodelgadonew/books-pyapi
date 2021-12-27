@@ -104,13 +104,16 @@ $ git clone git@github.com:caiodelgadonew/book-pyapi.git
 
 Run `docker-compose up` to create the environment:
 ```bash
-$ docker-compose  up
+$ docker-compose -f book-pyapi/docker-compose-mysql.yml up
 ``` 
 > You can add `-d` to the `docker-compose` command to start detached
 
-The database will be automatically populated through the API with two users and some books, if you dont want to populate the database comment the block `database-init` from `docker-compose.yml`.
+The database will be automatically populated through the API with two users and some books, if you dont want to populate the database comment the block `database-init` from `docker-compose-mysql.yml`.
 
 After the application healthcheck (30s) the `database-init` container will start and populate the database with some data.
 
 Access the application at the address: `http://<CONTAINER_HOST_IP>:9000`
 
+# Deploy in AWS with Terraform
+
+There are many ways of deploying this code into AWS using terraform, for those ones there will be a file with explanation on steps to do everything through code in the `/infra` folder. Be sure to read the [/infra/README.md](/infra/README.md) file.
