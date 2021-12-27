@@ -1,7 +1,5 @@
 # Simple API made with Python FastAPI
 
-> WIP: Deploy in AWS with Terraform
-
 Simple API written in Python using [FastAPI](https://fastapi.tiangolo.com/) to store and retrieve Books and Authors.
 
 ## Requisites
@@ -34,6 +32,7 @@ Environment Variables usages as following:
 
  The default webpage is the [swagger-ui](https://swagger.io/tools/swagger-ui/) running at the root path of the webserver (`/`).
  You can also access the [redoc-ui](https://redocly.github.io/redoc/) at the docs path of the webserver (`/docs`)
+
 ## Deployment
 
 ### Local
@@ -66,6 +65,8 @@ Access http://127.0.0.1:8000 at your browser.
 
 # Docker Container - SQLite
 
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVU0VSXVxuICAgIEJbYm9va3MtcHlhcGldXG4gICAgQ1soU1FMaXRlKV1cbiAgICBEW2RhdGFiYXNlLWluaXRdXG5cbiAgICBBLS0gcG9ydDo5MDAwIC0tPkI7XG4gICAgQi0tIGhlYWx0aGNoZWNrIC0tPkI7XG4gICAgQi0tIHdyaXRlIC0tPkM7XG4gICAgQy0tIHJlYWQgLS0-QjtcbiAgICBELS0gcG9wdWxhdGVzIC0tPkM7IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ)](https://mermaid.live/edit#eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVU0VSXVxuICAgIEJbYm9va3MtcHlhcGldXG4gICAgQ1soU1FMaXRlKV1cbiAgICBEW2RhdGFiYXNlLWluaXRdXG5cbiAgICBBLS0gcG9ydDo5MDAwIC0tPkI7XG4gICAgQi0tIGhlYWx0aGNoZWNrIC0tPkI7XG4gICAgQi0tIHdyaXRlIC0tPkM7XG4gICAgQy0tIHJlYWQgLS0-QjtcbiAgICBELS0gcG9wdWxhdGVzIC0tPkM7IiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)
+
 To run the application as a Docker Container you can use the provided [docker-compose-sqlite.yml](docker-compose-sqlite.yml)
 
 > Be sure to have [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) installed before proceeding
@@ -90,6 +91,8 @@ Access the application at the address: `http://<CONTAINER_HOST_IP>:9000`
 
 # Docker Container - MySQL
 
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVU0VSXVxuICAgIEJbYm9va3MtcHlhcGldXG4gICAgQ1soTXlTUUwpXVxuICAgIERbZGF0YWJhc2UtaW5pdF1cblxuICAgIEEtLSBwb3J0OjkwMDAgLS0-QjtcbiAgICBCLS0gaGVhbHRoY2hlY2sgLS0-QjtcbiAgICBDLS0gaGVhbHRoY2hlY2sgLS0-QztcbiAgICBCLS0gd3JpdGUgLS0-QztcbiAgICBDLS0gcmVhZCAtLT5CO1xuICAgIEQtLSBwb3B1bGF0ZXMgLS0-QztcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)](https://mermaid.live/edit#eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVU0VSXVxuICAgIEJbYm9va3MtcHlhcGldXG4gICAgQ1soTXlTUUwpXVxuICAgIERbZGF0YWJhc2UtaW5pdF1cblxuICAgIEEtLSBwb3J0OjkwMDAgLS0-QjtcbiAgICBCLS0gaGVhbHRoY2hlY2sgLS0-QjtcbiAgICBDLS0gaGVhbHRoY2hlY2sgLS0-QztcbiAgICBCLS0gd3JpdGUgLS0-QztcbiAgICBDLS0gcmVhZCAtLT5CO1xuICAgIEQtLSBwb3B1bGF0ZXMgLS0-QztcbiIsIm1lcm1haWQiOiJ7XG4gIFwidGhlbWVcIjogXCJkZWZhdWx0XCJcbn0iLCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)
+
 To run the application as a Docker Container you can use the provided [docker-compose.yml](docker-compose.yml)
 
 > Be sure to have [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/) installed before proceeding
@@ -111,4 +114,3 @@ After the application healthcheck (30s) the `database-init` container will start
 
 Access the application at the address: `http://<CONTAINER_HOST_IP>:9000`
 
-# [WIP] Deploy in AWS with Terraform
