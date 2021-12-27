@@ -3,6 +3,10 @@ book-pyapi
 *.db
 mysql/
 
+# Terraform state and files
+terraform.*
+.terraform*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
