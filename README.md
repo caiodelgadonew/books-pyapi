@@ -41,13 +41,13 @@ To deploy it locally its suggested to set up a [venv](https://docs.python.org/3.
 
 Clone the repository:
 ```bash
-$ git clone git@github.com:caiodelgadonew/book-pyapi.git
+$ git clone git@github.com:caiodelgadonew/books-pyapi.git
 ``` 
 
 Create a Virtual Environment and source it:
 ```bash
-$ python3 -m venv book-pyapi
-$ source book-pyapi/bin/activate
+$ python3 -m venv books-pyapi
+$ source books-pyapi/bin/activate
 ``` 
 
 After initializing your Virtual Environment install all dependencies
@@ -73,12 +73,12 @@ To run the application as a Docker Container you can use the provided [docker-co
 
 Clone the repository:
 ```bash
-$ git clone git@github.com:caiodelgadonew/book-pyapi.git
+$ git clone git@github.com:caiodelgadonew/books-pyapi.git
 ``` 
 
 Run `docker-compose up` to create the environment:
 ```bash
-$ docker-compose -f book-pyapi/docker-compose-sqlite.yml up
+$ docker-compose -f books-pyapi/docker-compose-sqlite.yml up
 ``` 
 > You can add `-d` to the `docker-compose` command to start detached
 
@@ -99,12 +99,12 @@ To run the application as a Docker Container you can use the provided [docker-co
 
 Clone the repository:
 ```bash
-$ git clone git@github.com:caiodelgadonew/book-pyapi.git
+$ git clone git@github.com:caiodelgadonew/books-pyapi.git
 ``` 
 
 Run `docker-compose up` to create the environment:
 ```bash
-$ docker-compose -f book-pyapi/docker-compose-mysql.yml up
+$ docker-compose -f books-pyapi/docker-compose-mysql.yml up
 ``` 
 > You can add `-d` to the `docker-compose` command to start detached
 
