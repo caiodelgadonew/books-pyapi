@@ -43,11 +43,9 @@ services:
     image: caiodelgadonew/books-pyapi
     container_name: database-init
     entrypoint: ash
-    command: "/extras/populate.sh"
+    command: "extras/populate.sh"
     environment:
       - SERVER=books-pyapi
-    volumes:
-      - ./extras/populate.sh:/extras/populate.sh
     depends_on: 
       books-pyapi:
         condition: service_healthy
