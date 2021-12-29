@@ -3,3 +3,5 @@ book-pyapi
 *.db
 mysql/
 
+# Terraform Files
+infra/
