@@ -13,6 +13,7 @@ WORKDIR     /home/uvicorn
 ENV         PATH="/home/uvicorn/.local/bin:${PATH}"
 
 COPY        --chown=uvicorn:uvicorn books /home/uvicorn/books
+COPY        --chown=uvicorn:uvicorn extras /home/uvicorn/extras
 
 RUN         pip3 install -r books/requirements.txt
 
