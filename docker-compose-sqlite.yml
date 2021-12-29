@@ -3,8 +3,7 @@ version: "3.8"
 services:
 
   books-pyapi:
-    build: .
-    image: books-pyapi
+    image: caiodelgadonew/books-pyapi
     container_name: books-pyapi
     ports:
       - "9000:9000"
@@ -23,7 +22,7 @@ services:
   # Populate database with some data through the API
   # Comment the block below if you want to start with a empty database
   database-init:
-    image: books-pyapi
+    image: caiodelgadonew/books-pyapi
     container_name: database-init
     entrypoint: ash
     command: "/extras/populate.sh"
