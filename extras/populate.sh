@@ -1,9 +1,12 @@
 #!/bin/bash
 # populate example users 
 
+APP_SERVER="${SERVER:=localhost}" 
+APP_PORT="${PORT:=9000}"
+
 populate_users() {
   curl -fsSLX 'POST' \
-    'http://'"$SERVER"':9000/api/v1/user/' \
+    'http://'"$APP_SERVER"':'"$APP_PORT"'/api/v1/user/' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -13,7 +16,7 @@ populate_users() {
   }';echo 
 
   curl -fsSLX 'POST' \
-    'http://'"$SERVER"':9000/api/v1/user/' \
+    'http://'"$APP_SERVER"':'"$APP_PORT"'/api/v1/user/' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -25,7 +28,7 @@ populate_users() {
 
 populate_books() {
   curl -fsSLX 'POST' \
-    'http://'"$SERVER"':9000/api/v1/book/' \
+    'http://'"$APP_SERVER"':'"$APP_PORT"'/api/v1/book/' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -37,7 +40,7 @@ populate_books() {
   }'; echo 
 
   curl -fsSLX 'POST' \
-    'http://'"$SERVER"':9000/api/v1/book/' \
+    'http://'"$APP_SERVER"':'"$APP_PORT"'/api/v1/book/' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -49,7 +52,7 @@ populate_books() {
   }'; echo 
 
   curl -fsSLX 'POST' \
-    'http://'"$SERVER"':9000/api/v1/book/' \
+    'http://'"$APP_SERVER"':'"$APP_PORT"'/api/v1/book/' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -61,7 +64,7 @@ populate_books() {
   }'; echo 
 
   curl -fsSLX 'POST' \
-    'http://'"$SERVER"':9000/api/v1/book/' \
+    'http://'"$APP_SERVER"':'"$APP_PORT"'/api/v1/book/' \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -80,7 +83,7 @@ then
   echo "ERROR: Please be sure to define $SERVER before running the script"
   exit 1
 else
-  IS_POPULATED=`curl -s -o /dev/null -w "%{http_code}" -X 'GET' 'http://'"$SERVER"':9000/api/v1/user/1'`
+  IS_POPULATED=`curl -s -o /dev/null -w "%{http_code}" -X 'GET' 'http://'"$APP_SERVER"':'"$APP_PORT"'/api/v1/user/1'`
 fi
 
 if [ $IS_POPULATED == "200" ]
