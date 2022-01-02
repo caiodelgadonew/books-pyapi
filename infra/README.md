@@ -73,6 +73,19 @@ You can use a tool like ab (ApacheBenchmark) to test the autoscaler. Eg.:
 
 `ab -n 10000 -c 10 http://"books-api-alb-<10_DIGITS>.<AWS_REGION>.elb.amazonaws.com/`
 
+
+#### Populating the Database
+
+If you want to populate the database with some data you can use the script provided in `extras` folder.
+> Please we aware to configure the variables `SERVER` and `PORT` that should be equal to the DNS entry and por for the loadbalancer.
+
+Eg.:
+```bash
+export SERVER=<ALB_DNS_ENTRY>
+export PORT=80
+bash extras/populate.sh
+``` 
+
 #### Troubleshooting
 
 If any troubleshooting is needed, you can connect into the ec2 instance through the AWS `ssm` at the amazon console.
