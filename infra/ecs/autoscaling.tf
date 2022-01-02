@@ -16,7 +16,7 @@ resource "aws_autoscaling_group" "app" {
   name                 = local.service_name
   launch_configuration = aws_launch_configuration.app.name
   min_size             = 2
-  max_size             = 3
+  max_size             = 6
   enabled_metrics      = ["GroupMinSize", "GroupMaxSize", "GroupDesiredCapacity", "GroupInServiceInstances", "GroupTotalInstances"]
   metrics_granularity  = "1Minute"
   vpc_zone_identifier  = [aws_subnet.private_subnet_1a.id, aws_subnet.private_subnet_1b.id]
