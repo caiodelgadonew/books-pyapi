@@ -8,9 +8,9 @@ There's many ways of deploying the terraform code. For all of them you need Terr
 1. Install [terraform v1.0.11](https://releases.hashicorp.com/terraform/1.0.11/) or any version that satisfies the constraints.
 2. Configure your aws credentials, refer to the [AWS Documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) or [AWS Provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication)
 
-**_[WIP]_** The structure of this infra folder consist of multiple folders, each one deploying in a different way.
+The structure of this infra folder consist of multiple folders, each one deploying in a different way.
 - `ec2`
-- [WIP]
+- `ecs`
 
 ## Basic Deployment
 
@@ -30,7 +30,7 @@ The default region is set as `eu-central-1`, if you want to deploy in a differen
 
 The endpoints are protected to security groups enabling access only to the ports needed by the loadbalacer and application.
 
-When the ec2 application inits, it bootstraps the instalation of Docker and the `books-pyapi` into a docker-compose that get the application alive.
+When the ec2 instance inits, it bootstraps the instalation of Docker and the `books-pyapi` into a docker-compose that get the application alive.
 
 > Please note that the application can take some time to became ready since there's healthchecks for the target group and also containers.
 
@@ -47,3 +47,36 @@ As soon as the application is ready you should be able to access it through the 
 If any troubleshooting is needed, you can connect into the ec2 instance through the AWS `ssm` at the amazon console.
 
 > This is the only way to access the ec2 instance. There was not added a public port for `SSH` because of security measures.
+
+### ECS Deployment
+> The password for the database is stored in plain text, for production purposes it should be done by encrypting with KMS and stored on secretsmanager or by another tool like [vault](https://www.vaultproject.io/)
+
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVc2VyXVxuICAgIEJbTG9hZCBCYWxhbmNlcl1cbiAgICBDW1RhcmdldCBHcm91cF1cbiAgICBEW0VDMiBJbnN0YW5jZV1cbiAgICBFW0VDMiBJbnN0YW5jZV1cbiAgICBGW0VDUyBDTFVTVEVSXVxuICAgIEdbRUNTIFNFUlZJQ0VdXG4gICAgSFtFQ1MgVEFTSyBERUZJTklUSU9OXVxuXG4gICAgQS0tIHBvcnQ6ODAgLS0-QjtcbiAgICBCLS0gaHR0cCBsaXN0ZW5lciAtLT5DO1xuICAgIEMtLSBwb3J0OjkwMDAgLS0-RCA7XG4gICAgQy0tIHBvcnQ6OTAwMCAtLT5FIDtcblxuICAgIEQgLS0-IEggO1xuICAgIEUgLS0-IEggO1xuICAgIEcgLS0-IEggO1xuICAgIEYgLS0-IEcgO1xuICAgIFxuICAgIFxuICAgIFxuIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ)](https://mermaid.live/edit#eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVc2VyXVxuICAgIEJbTG9hZCBCYWxhbmNlcl1cbiAgICBDW1RhcmdldCBHcm91cF1cbiAgICBEW0VDMiBJbnN0YW5jZV1cbiAgICBFW0VDMiBJbnN0YW5jZV1cbiAgICBGW0VDUyBDTFVTVEVSXVxuICAgIEdbRUNTIFNFUlZJQ0VdXG4gICAgSFtFQ1MgVEFTSyBERUZJTklUSU9OXVxuXG4gICAgQS0tIHBvcnQ6ODAgLS0-QjtcbiAgICBCLS0gaHR0cCBsaXN0ZW5lciAtLT5DO1xuICAgIEMtLSBwb3J0OjkwMDAgLS0-RCA7XG4gICAgQy0tIHBvcnQ6OTAwMCAtLT5FIDtcblxuICAgIEQgLS0-IEggO1xuICAgIEUgLS0-IEggO1xuICAgIEcgLS0-IEggO1xuICAgIEYgLS0-IEcgO1xuICAgIFxuICAgIFxuICAgIFxuIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)
+
+The endpoints are protected to security groups enabling access only to the ports needed by the loadbalacer and application.
+
+When the ec2 instance inits, it bootstraps the instalation of ecs-agent.
+
+> Please note that the application can take some time to became ready since there's healthchecks for the target group.
+
+Apply the code through terraform, at the end a message will be shown with the endpoint of the application in the following format:
+
+```
+aws_lb = "books-api-alb-<10_DIGITS>.<AWS_REGION>.elb.amazonaws.com"
+```
+As soon as the application is ready you should be able to access it through the address above.
+
+
+The EC2 instance is managed by an auto scaling group thats scale in with 80% or greather of cpu utilization and scale out with 60% or less of cpu utilization.
+
+You can use a tool like ab (ApacheBenchmark) to test the autoscaler. Eg.:
+
+`ab -n 10000 -c 10 http://"books-api-alb-<10_DIGITS>.<AWS_REGION>.elb.amazonaws.com/`
+
+#### Troubleshooting
+
+If any troubleshooting is needed, you can connect into the ec2 instance through the AWS `ssm` at the amazon console.
+
+> This is the only way to access the ec2 instance. There was not added a public port for `SSH` because of security measures.
+
+Another option to see the logs is through the [CloudWatch](https://eu-central-1.console.aws.amazon.com/cloudwatch/home#logsV2:log-groups/log-group/books-pyapi) log group `books-pyapi` that will aggregate and store the log stream for the application.
