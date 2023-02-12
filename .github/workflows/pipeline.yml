@@ -52,3 +52,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Healthcheck test
+        run: |
+          cd .. 
+          python -m uvicorn books.main:app &
+          sleep 2
+          curl -fsSL -X 'GET' 'http://localhost:8000/api/v1/health' -H 'accept: application/json' | jq --exit-status -n  'inputs | if has("status") then .status=="UP" else false end' > /dev/null || exit 1
+          kill %1
