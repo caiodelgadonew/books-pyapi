@@ -1,11 +1,8 @@
 # Deploy in AWS with Terraform
 
-There's many ways of deploying the terraform code. For all of them you need Terraform CLI version `~> 1.0.0`, which stands for allowing only the _rightmost_ version increment.
+There's many ways of deploying the terraform code. For all of them you need Terraform CLI version `~> 1.3.0`, which stands for allowing only the _rightmost_ version increment.
 
-> This version constraint is set because of an existing bug of Terraform CLI that affects versions `v1.1.0` and `1.1.1`, the [changelog for version 1.1.2](https://github.com/hashicorp/terraform/releases/tag/v1.1.2) says that it was fixed but the problem is still there and a issue is opened for it [#30266](https://github.com/hashicorp/terraform/issues/30266).
-
-
-1. Install [terraform v1.0.11](https://releases.hashicorp.com/terraform/1.0.11/) or any version that satisfies the constraints.
+1. Install [terraform v1.3.8](https://releases.hashicorp.com/terraform/1.3.8/) or any version that satisfies the constraints.
 2. Configure your aws credentials, refer to the [AWS Documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) or [AWS Provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication)
 
 The structure of this infra folder consist of multiple folders, each one deploying in a different way.
