@@ -1,8 +1,3 @@
-variable "state_bucket" {
-    type = string
-    description = "Bucket created for the terraform state"
-}
-
 variable "region" {
   description = "Define what region the instance will be deployed"
   default     = "eu-central-1"
