@@ -1,7 +1,7 @@
 resource "aws_rds_cluster" "app" {
   cluster_identifier     = "aurora-${local.service_name}"
   engine                 = "aurora-mysql"
-  engine_version         = "5.7.mysql_aurora.2.03.2"
+  engine_version         = "5.7.mysql_aurora.2.11.0"
   database_name          = "books"
   master_username        = "apiuser"
   master_password        = "apipassword"
