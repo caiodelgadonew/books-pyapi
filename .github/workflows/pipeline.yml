@@ -1,4 +1,4 @@
-name: CI - Lint / Tests / Build
+name: Code - Lint / Tests / Build
 
 on: [push]
 

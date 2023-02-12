@@ -1,6 +1,6 @@
 variable "state_bucket" {
-    type = string
-    description = "Bucket name to be created for the terraform state"
+  type        = string
+  description = "Bucket name to be created for the terraform state"
 }
 
 variable "name" {

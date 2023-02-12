@@ -23,9 +23,9 @@ resource "aws_lb_target_group" "tg_books_api" {
 
   health_check {
     healthy_threshold = 3
-    path = "/api/v1/health"
-    port = 9000
-    matcher = 200
+    path              = "/api/v1/health"
+    port              = 9000
+    matcher           = 200
   }
 }
 
