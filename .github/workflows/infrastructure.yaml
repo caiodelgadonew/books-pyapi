@@ -1,0 +1,38 @@
+name: Infrastructure Deployment - ECS
+
+on: [push]
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+
+  terraform:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: infra/ecs
+
+    steps:
+    - uses: actions/checkout@v3
+    
+
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.0.0
+
+    - name: Terraform init
+      run: terraform init -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" -backend-config="dynamodb_table=bucket=${{ vars.TF_STATE_BUCKET }}"
+    
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
+      
+    - name: Plan Output
+      run: | 
+        echo ${{ steps.plan.outputs.stdout }}
+        echo ${{ steps.plan.outputs.stderr }}
+        echo ${{ steps.plan.outputs.exitcode }}
