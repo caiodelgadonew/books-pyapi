@@ -15,7 +15,7 @@ resource "aws_lb" "books_api_alb" {
   }
 }
 
-aresource "aws_lb_target_group" "tg_books_api" {
+resource "aws_lb_target_group" "tg_books_api" {
   name     = "tg-books-api"
   port     = 9000
   protocol = "HTTP"
