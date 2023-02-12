@@ -1,10 +1,10 @@
 # Simple API made with Python FastAPI
 
-Simple API written in Python using [FastAPI](https://fastapi.tiangolo.com/) to store and retrieve Books and Authors.
+Simple API written in Python using [FastAPI](https://fastapi.tiangolo.com/) to store and retrieve Books and Authors. 
 
 ## Requisites
 
-This app is intended to run at minimum Python version 3.6.
+This app is intended to run at minimum Python version 3.7.
 Extra requirements can be seen in [requirements.txt](books/requirements.txt) file.
 
 ## Database Customization
