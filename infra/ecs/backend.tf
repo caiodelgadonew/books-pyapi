@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    key    = "books-py-api/terraform.tfstate"
-    region = "us-east-1"
+    key    = "books-pyapi/terraform.tfstate"
+    region = "eu-central-1"
   }
 }
 
