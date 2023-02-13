@@ -2,6 +2,11 @@ name: Code - Lint / Tests / Build
 
 on: [push]
 
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+
 jobs:
 
   lint:
@@ -24,9 +29,7 @@ jobs:
 
       - name: Lint with flake8
         run: |
-          # stop the build if there are Python syntax errors or undefined names
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   tests:
@@ -78,9 +81,27 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build
         uses: docker/build-push-action@v4
+        if: github.ref != 'refs/heads/main'
+        with:
+          push: false
+          tags: "${{ vars.DOCKERHUB_USERNAME }}/books-pyapi:latest"
+
+      - name: Build and Push
+        uses: docker/build-push-action@v4
+        if: github.ref == 'refs/heads/main'
         with:
           push: true
           tags: "${{ vars.DOCKERHUB_USERNAME }}/books-pyapi:latest"
           
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+
+      - name: Deploy latest revision
+        run: aws ecs update-service --cluster books-pyapi --service books-pyapi --force-new-deployment
+
