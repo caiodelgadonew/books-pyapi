@@ -4,7 +4,7 @@ yum update -y
 amazon-linux-extras disable docker
 amazon-linux-extras install -y ecs
 
-echo "ECS_CLUSTER=${CLUSTER_NAME}" > /etc/ecs/ecs.config
+echo -e "ECS_CLUSTER=${CLUSTER_NAME}\nECS_IMAGE_PULL_BEHAVIOR=always" > /etc/ecs/ecs.config
 
 systemctl start amazon-ssm-agent
 systemctl enable amazon-ssm-agent
