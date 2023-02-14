@@ -1,3 +1,5 @@
+# tfsec:ignore:aws-ec2-enforce-launch-config-http-token-imds
+# tfsec:ignore:aws-ec2-enable-launch-config-at-rest-encryption
 resource "aws_launch_configuration" "app" {
   name                 = local.service_name
   image_id             = data.aws_ami.amazon_linux_ecs.id

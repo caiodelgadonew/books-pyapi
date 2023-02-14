@@ -1,4 +1,4 @@
-name: Terraform - Lint & Drift Detection
+name: Terraform - Lint , Security & Drift Detection
 
 on: [push]
 
@@ -35,6 +35,19 @@ jobs:
     - name: Terraform Validate
       run: terraform validate
     
+
+  tfsec: 
+    name: Security Check
+    needs: lint
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: tfsec
+      uses: aquasecurity/tfsec-action@v1.0.0
+      with:
+        working_directory: infra/ecs
 
   plan:
     name: Terraform Plan
