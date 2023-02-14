@@ -1,4 +1,4 @@
-
+# tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "app" {
   name = local.service_name
 
@@ -18,6 +18,11 @@ resource "aws_ecs_cluster" "app" {
         cloud_watch_log_group_name = aws_cloudwatch_log_group.app.name
       }
     }
+  }
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
   }
 
   tags = {

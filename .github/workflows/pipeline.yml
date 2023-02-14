@@ -1,4 +1,4 @@
-name: Code - Lint / Tests / Build
+name: Code - Lint / Tests / Build / Deploy
 
 on: [push]
 
@@ -10,6 +10,7 @@ env:
 jobs:
 
   lint:
+    name: Lint code Check
     runs-on: ubuntu-22.04
     defaults:
       run:
@@ -33,6 +34,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   tests:
+    name: Test Python Versions
     needs: lint
     runs-on: ubuntu-20.04
     defaults:
@@ -65,6 +67,7 @@ jobs:
           kill %1
 
   build:
+    name: Build and Push App
     needs: tests
     runs-on: ubuntu-22.04
 
@@ -96,6 +99,7 @@ jobs:
           tags: "${{ vars.DOCKERHUB_USERNAME }}/books-pyapi:latest"
           
   deploy:
+    name: App deployment
     needs: build
     runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'

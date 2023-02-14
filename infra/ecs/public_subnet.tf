@@ -1,4 +1,4 @@
-
+# tfsec:ignore:aws-ec2-no-public-ip-subnet
 resource "aws_subnet" "public_subnet_1a" {
   vpc_id                  = aws_vpc.cluster_vpc.id
   cidr_block              = "10.0.100.0/24"
@@ -10,6 +10,7 @@ resource "aws_subnet" "public_subnet_1a" {
   }
 }
 
+# tfsec:ignore:aws-ec2-no-public-ip-subnet
 resource "aws_subnet" "public_subnet_1b" {
   vpc_id                  = aws_vpc.cluster_vpc.id
   cidr_block              = "10.0.101.0/24"

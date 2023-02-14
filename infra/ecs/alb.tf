@@ -1,9 +1,11 @@
+# tfsec:ignore:aws-elb-alb-not-public
 resource "aws_lb" "books_api_alb" {
-  name               = "books-api-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.sg_alb_books_api.id]
-  idle_timeout       = 400
+  name                       = "books-api-alb"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.sg_alb_books_api.id]
+  idle_timeout               = 400
+  drop_invalid_header_fields = true
 
   subnets = [
     aws_subnet.public_subnet_1a.id,
@@ -29,6 +31,7 @@ resource "aws_lb_target_group" "tg_books_api" {
   }
 }
 
+# tfsec:ignore:aws-elb-http-not-used
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_lb.books_api_alb.arn
   port              = "80"

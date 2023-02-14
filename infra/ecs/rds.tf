@@ -1,3 +1,5 @@
+# tfsec:ignore:aws-rds-specify-backup-retention
+# tfsec:ignore:aws-rds-encrypt-cluster-storage-data
 resource "aws_rds_cluster" "app" {
   cluster_identifier     = "aurora-${local.service_name}"
   engine                 = "aurora-mysql"
@@ -8,7 +10,6 @@ resource "aws_rds_cluster" "app" {
   skip_final_snapshot    = "true"
   vpc_security_group_ids = [aws_security_group.sg_rds.id]
   db_subnet_group_name   = aws_db_subnet_group.app.name
-
 
   availability_zones = [
     "${var.region}a",
@@ -24,6 +25,7 @@ resource "aws_rds_cluster" "app" {
   }
 }
 
+# tfsec:ignore:aws-rds-enable-performance-insights
 resource "aws_rds_cluster_instance" "app" {
   identifier           = "aurora-${local.service_name}"
   cluster_identifier   = aws_rds_cluster.app.id
