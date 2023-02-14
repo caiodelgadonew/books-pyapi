@@ -1,5 +1,7 @@
 # Deploy in AWS with Terraform
 
+> **WARNING:** Resources running on AWS costs money, be sure to remove them if you dont need it anymore with the command `terraform destroy`
+
 There's many ways of deploying the terraform code. For all of them you need Terraform CLI version `~> 1.3.0`, which stands for allowing only the _rightmost_ version increment.
 
 1. Install [terraform v1.3.8](https://releases.hashicorp.com/terraform/1.3.8/) or any version that satisfies the constraints.
@@ -18,8 +20,6 @@ $ terraform apply
 ```
 
 The default region is set as `eu-central-1`, if you want to deploy in a different version you can issue the command `terraform apply -var="region=us-east-1"` for example if you want to deploy in `us-east-1`, or change it into the `variable.tf` file.
-
-> **WARNING:** Resources running on AWS costs money, be sure to remove them if you dont need it anymore with the command `terraform destroy`
 
 ### EC2 Deployment
 
@@ -46,9 +46,27 @@ If any troubleshooting is needed, you can connect into the ec2 instance through 
 > This is the only way to access the ec2 instance. There was not added a public port for `SSH` because of security measures.
 
 ### ECS Deployment
-> The password for the database is stored in plain text, for production purposes it should be done by encrypting with KMS and stored on secretsmanager or by another tool like [vault](https://www.vaultproject.io/)
+
+There is some pre requisites for the ECS deployment to be done.
+
+1. Run the code in `/infra/state_bucket` to create the bucket to store the state and the dynamodb table to store the lock
+```bash
+$ terraform init
+$ terraform apply -var state_bucket=$TF_STATE_BUCKET
+``` 
+> With `$TF_STATE_BUCKET` being the name of the bucket to store the terraform state
+
+2. Run the code in `/infra/ecs` to create all the resources needed for the application to be run
+```bash
+$ terraform init -backend-config="bucket=$TF_STATE_BUCKET" -backend-config="dynamodb_table=$TF_STATE_BUCKET"
+$ terraform apply 
+``` 
+
+The end result will be the following:
 
 [![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVc2VyXVxuICAgIEJbTG9hZCBCYWxhbmNlcl1cbiAgICBDW1RhcmdldCBHcm91cF1cbiAgICBEW0VDMiBJbnN0YW5jZV1cbiAgICBFW0VDMiBJbnN0YW5jZV1cbiAgICBGW0VDUyBDTFVTVEVSXVxuICAgIEdbRUNTIFNFUlZJQ0VdXG4gICAgSFtFQ1MgVEFTSyBERUZJTklUSU9OXVxuICAgIElbTEFVTkNIIENPTkZJR1VSQVRPUl1cbiAgICBKW0FVVE9TQ0FMSU5HIEdST1VQXVxuICAgIERCQ1tSRFMgQXVyb3JhIENsdXN0ZXJdXG4gICAgREJbKFJEUyBBdXJvcmEgSW5zdGFuY2UpXVxuXG4gICAgQS0tIHBvcnQ6ODAgLS0-QjtcbiAgICBCLS0gaHR0cCBsaXN0ZW5lciAtLT5DO1xuICAgIEMtLSBwb3J0OjkwMDAgLS0-RDtcbiAgICBDLS0gcG9ydDo5MDAwIC0tPkU7XG4gICAgRSAtLT4gREJDO1xuICAgIEQgLS0-IERCQztcbiAgICBEQkMgLS0-IERCO1xuXG4gICAgRiAtLT4gRztcbiAgICBHIC0tPiBIO1xuICAgIEggLS0-IEVDMjtcbiAgICBJIC0tPiBKO1xuICAgIEotLSBMYXVuY2ggTmV3IEluc3RhbmNlIC0tPiBFQzI7XG4gICAgXG4gICAgXG4gICAgXG4iLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)](https://mermaid.live/edit/#eyJjb2RlIjoiZ3JhcGggTFI7XG4gICAgQVtVc2VyXVxuICAgIEJbTG9hZCBCYWxhbmNlcl1cbiAgICBDW1RhcmdldCBHcm91cF1cbiAgICBEW0VDMiBJbnN0YW5jZV1cbiAgICBFW0VDMiBJbnN0YW5jZV1cbiAgICBGW0VDUyBDTFVTVEVSXVxuICAgIEdbRUNTIFNFUlZJQ0VdXG4gICAgSFtFQ1MgVEFTSyBERUZJTklUSU9OXVxuICAgIElbTEFVTkNIIENPTkZJR1VSQVRPUl1cbiAgICBKW0FVVE9TQ0FMSU5HIEdST1VQXVxuICAgIERCQ1tSRFMgQXVyb3JhIENsdXN0ZXJdXG4gICAgREJbKFJEUyBBdXJvcmEgSW5zdGFuY2UpXVxuXG4gICAgQS0tIHBvcnQ6ODAgLS0-QjtcbiAgICBCLS0gaHR0cCBsaXN0ZW5lciAtLT5DO1xuICAgIEMtLSBwb3J0OjkwMDAgLS0-RDtcbiAgICBDLS0gcG9ydDo5MDAwIC0tPkU7XG4gICAgRSAtLT4gREJDO1xuICAgIEQgLS0-IERCQztcbiAgICBEQkMgLS0-IERCO1xuXG4gICAgRiAtLT4gRztcbiAgICBHIC0tPiBIO1xuICAgIEggLS0-IEVDMjtcbiAgICBJIC0tPiBKO1xuICAgIEotLSBMYXVuY2ggTmV3IEluc3RhbmNlIC0tPiBFQzI7XG4gICAgXG4gICAgXG4gICAgXG4iLCJtZXJtYWlkIjoie1xuICBcInRoZW1lXCI6IFwiZGVmYXVsdFwiXG59IiwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ)
+
+> The password for the database is stored in plain text, for production purposes it should be done by encrypting with KMS and stored on secretsmanager or by another tool like [vault](https://www.vaultproject.io/)
 
 The endpoints are protected to security groups enabling access only to the ports needed by the loadbalacer and application.
 
