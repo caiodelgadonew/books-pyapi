@@ -117,3 +117,53 @@ Access the application at the address: `http://<CONTAINER_HOST_IP>:9000`
 # Deploy in AWS with Terraform
 
 There are many ways of deploying this code into AWS using terraform, for those ones there will be a file with explanation on steps to do everything through code in the `/infra` folder. Be sure to read the [/infra/README.md](/infra/README.md) file.
+
+# CI/CD with Github Actions
+
+There are two pipelines for this project:
+1. `infrastructure.yaml` - Terraform - Lint , Security & Drift Detection
+2. `pipeline.yml` - Code - Lint / Tests / Build / Deploy
+
+To use the pipelines, it is required to set up some Github [Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and [Variables](https://docs.github.com/en/actions/learn-github-actions/variables).
+
+**Secrets**
+- `AWS_ACCESS_KEY_ID` -  AWS access key from an user with privileges to create the infrastructure
+- `AWS_SECRET_ACCESS_KEY` - AWS secret key associated with the access key.
+- `DOCKERHUB_TOKEN` - [Dockerhub access token](https://docs.docker.com/docker-hub/access-tokens/) associated with the Dockerhub Username
+
+**Variables**
+- `AWS_DEFAULT_REGION` - AWS Region to send the request to.
+- `DOCKERHUB_USERNAME` - Dockerhub username with privileges to push the image 
+- `TF_STATE_BUCKET` - name of the bucket with the terraform state
+
+## Infrastructure Pipeline
+
+> Be sure to check out [ECS Deployment](https://github.com/caiodelgadonew/books-pyapi/tree/main/infra#ecs-deployment) section in [/infra/README.md](/infra/README.md). This pipeline will fail if the infrastructure is not created in advance.
+
+The infrastructure pipeline consists of the following steps:
+
+> Only applicable to `./infra/ecs`
+
+1. `Terraform Lint and Validate`: Verify the terraform code with `terraform fmt` and `terraform validate`.
+2. `Security Check`: Verify the terraform code with `tfsec` for security issues.
+3. `Terraform Plan`: Verify if there's drift on the infrastructure.
+
+The Infrastructure Pipeline is meant to be as an support step for the Engineer in a way that the code is merged only if there's no changes (the code was applied before). It is possible to do an automatic apply for the terraform changes in the pipeline, but doing it so could be a bit disruptive if it not done in a proper way and since the idea of this code is to give a glimpse of what is possible to do in a infrastructure pipeline, I've decided to not implement such automatic apply.
+
+If you're interested in doing it automatically, I suggest to use one of the following solutions: 
+- [Terraform Cloud](https://cloud.hashicorp.com/products/terraform) - Cloud Platform to run Terraform Code
+- [Atlantis](https://www.runatlantis.io/) - Terraform Pull Request Automation
+- [Spacelift](https://spacelift.io/) - CI/CD Platform
+- [Scalr](https://www.scalr.com/) - IaC Platform
+
+
+## Code Pipeline
+
+> Be sure to check out [ECS Deployment](https://github.com/caiodelgadonew/books-pyapi/tree/main/infra#ecs-deployment) section in [/infra/README.md](/infra/README.md). This pipeline will fail if the infrastructure is not created in advance and executed on `main` branch.
+
+The code pipeline consists of the following steps:
+
+1. `Lint code Check`: Verify the code linting with `flake8`.
+2. `Test Python Versions`: Test the application execution and response in multiple Python Versions. `python-version: ["3.7", "3.8", "3.9", "3.10", "3.11" ]`
+3. `Build and Push App`: If the pipeline runs for the `main` branch, it builds the app and pushes to docker registry. If it runs in any other branch or pull request, it builds the app to verify the build process.
+4. `App Deployment`: Deploys the latest revision of the application to the ecs service deployed by the infrastructure pipeline
